@@ -238,9 +238,7 @@ class ContactDetailsTestCase(unittest.TestCase):
         driver.find_element_by_id('contact_emp_oth_email').clear()
         driver.find_element_by_id('contact_emp_oth_email').send_keys(other_email)
 
-
         driver.find_element_by_id('btnSave').click()
-
 
         value_work_email = driver.find_element_by_id('contact_emp_work_email').get_attribute('value')
         value_other_email = driver.find_element_by_id('contact_emp_oth_email').get_attribute('value')
