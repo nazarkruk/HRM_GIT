@@ -19,9 +19,7 @@ class ContactDetailsTestCase(unittest.TestCase):
         self.driver.quit()
 
     def test_34_add_immigration_passport(self):
-
         driver = self.driver
-
         driver.find_element_by_id('txtUsername').send_keys('admin')
         driver.find_element_by_id('txtPassword').send_keys('password')
         driver.find_element_by_id("btnLogin").click()
@@ -56,19 +54,14 @@ class ContactDetailsTestCase(unittest.TestCase):
         self.wait.until(expected_conditions.text_to_be_present_in_element((By.CSS_SELECTOR, ".message.success"),
                                                                            'Successfully Saved'))
 
-
         self.driver.find_element_by_css_selector('#immigrationCheckAll').click()
         self.driver.find_element_by_id('btnDelete').click()
 
         self.wait.until(expected_conditions.text_to_be_present_in_element((By.CSS_SELECTOR, ".message.success"),
                                                                           'Successfully Deleted'))
 
-
-
     def test_35_add_immigration_visa(self):
-
         driver = self.driver
-
         driver.find_element_by_id('txtUsername').send_keys('admin')
         driver.find_element_by_id('txtPassword').send_keys('password')
         driver.find_element_by_id("btnLogin").click()
@@ -112,11 +105,8 @@ class ContactDetailsTestCase(unittest.TestCase):
         self.wait.until(expected_conditions.text_to_be_present_in_element((By.CSS_SELECTOR, ".message.success"),
                                                                           'Successfully Deleted'))
 
-
     def test_36_add_multiple_immigrations(self):
-
         driver = self.driver
-
         driver.find_element_by_id('txtUsername').send_keys('admin')
         driver.find_element_by_id('txtPassword').send_keys('password')
         driver.find_element_by_id("btnLogin").click()
@@ -220,6 +210,90 @@ class ContactDetailsTestCase(unittest.TestCase):
 
         self.wait.until(expected_conditions.text_to_be_present_in_element((By.CSS_SELECTOR, ".message.success"),
                                                                           'Successfully Deleted'))
+
+
+    def test_38_add_attachment_immigration(self):
+        driver = self.driver
+
+        driver.find_element_by_id('txtUsername').send_keys('admin')
+        driver.find_element_by_id('txtPassword').send_keys('password')
+        driver.find_element_by_id("btnLogin").click()
+
+        sleep(1)
+
+        driver.find_element_by_id('menu_pim_viewMyDetails').click()
+        driver.find_element_by_link_text('Immigration').click()
+
+        sleep(1)
+
+        driver.find_element_by_id('btnAddAttachment').click()
+
+        driver.find_element_by_id('ufile').send_keys('/Users/nazarkruk/Desktop/Orange_HRM/Orange-HRM-Test_Plan.pdf')
+
+        driver.find_element_by_id('btnSaveAttachment').click()
+
+        self.wait.until(expected_conditions.text_to_be_present_in_element((By.CSS_SELECTOR, ".message.success"),'Successfully Saved'))
+
+        self.driver.find_element_by_css_selector("#tblAttachments > tbody > tr.odd > td.center > input").click()
+
+        self.driver.find_element_by_id("btnDeleteAttachment").click()
+
+        self.wait.until(expected_conditions.text_to_be_present_in_element((By.CSS_SELECTOR, ".message.success"),
+                                                                          'Successfully Deleted'))
+
+    def test_39_delete_attachment_immigration(self):
+        driver = self.driver
+
+        driver.find_element_by_id('txtUsername').send_keys('admin')
+        driver.find_element_by_id('txtPassword').send_keys('password')
+        driver.find_element_by_id("btnLogin").click()
+
+        sleep(1)
+
+        driver.find_element_by_id('menu_pim_viewMyDetails').click()
+        driver.find_element_by_link_text('Immigration').click()
+
+        sleep(1)
+
+        driver.find_element_by_id('btnAddAttachment').click()
+
+        driver.find_element_by_id('ufile').send_keys('/Users/nazarkruk/Desktop/Orange_HRM/Orange-HRM-Test_Plan.pdf')
+
+        driver.find_element_by_id('btnSaveAttachment').click()
+
+        self.wait.until(expected_conditions.text_to_be_present_in_element((By.CSS_SELECTOR, ".message.success"),'Successfully Saved'))
+
+        self.driver.find_element_by_css_selector("#tblAttachments > tbody > tr.odd > td.center > input").click()
+
+        self.driver.find_element_by_id("btnDeleteAttachment").click()
+        self.wait.until(expected_conditions.text_to_be_present_in_element((By.CSS_SELECTOR, ".message.success"),
+                                                                          'Successfully Deleted'))
+
+    def test_40_add_attachment_large_size(self):
+        driver = self.driver
+
+        driver.find_element_by_id('txtUsername').send_keys('admin')
+        driver.find_element_by_id('txtPassword').send_keys('password')
+        driver.find_element_by_id("btnLogin").click()
+
+        sleep(1)
+
+        driver.find_element_by_id('menu_pim_viewMyDetails').click()
+        driver.find_element_by_link_text('Immigration').click()
+
+        sleep(1)
+
+        driver.find_element_by_id('btnAddAttachment').click()
+
+        driver.find_element_by_id('ufile').send_keys('/Users/nazarkruk/Desktop/Orange_HRM/jpg_2mb.jpg')
+
+        driver.find_element_by_id('btnSaveAttachment').click()
+
+        sleep(1)
+
+        crash_message = driver.find_element_by_xpath('/html/body/center[1]/h1').text
+
+        self.assertEqual('413 Request Entity Too Large', crash_message)
 
 
 if __name__ == '__main__':
