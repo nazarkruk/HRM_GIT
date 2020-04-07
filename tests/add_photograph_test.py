@@ -6,13 +6,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
+from fixtures.params import DOMAIN, CHROME_EXECUTABLE_PATH
+
 
 class AddPhotoTestCase(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.driver = webdriver.Chrome(executable_path='/Users/nazarkruk/PycharmProjects/HRM100Full/browsers_drivers/chromedriver')
-        self.driver.get("http://hrm-online.portnov.com/")
-        self.wait = WebDriverWait(self.driver, 10)
+        self.driver = webdriver.Chrome(executable_path=CHROME_EXECUTABLE_PATH)
+        self.driver.get(DOMAIN)
+        self.wait = WebDriverWait(self.driver, 2)
 
     def tearDown(self) -> None:
         self.driver.quit()

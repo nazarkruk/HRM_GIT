@@ -2,12 +2,15 @@ import unittest
 from time import sleep
 from selenium import webdriver
 
+from fixtures.params import DOMAIN, CHROME_EXECUTABLE_PATH
+
 
 class MyLoginCase(unittest.TestCase):
 
     def setUp(self):
-        self.driver = webdriver.Chrome(executable_path="/Users/nazarkruk/PycharmProjects/HRM100Full/browsers_drivers/chromedriver")
-        self.driver.get("http://hrm-online.portnov.com/")
+        self.driver = webdriver.Chrome(executable_path=CHROME_EXECUTABLE_PATH)
+        self.driver.get(DOMAIN)
+
 
     def tearDown(self) -> None:
         self.driver.quit()
