@@ -6,9 +6,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from fixtures.params import DOMAIN, CHROME_EXECUTABLE_PATH, JPG_500_kb_path
+from fixtures.params import DOMAIN, JPG_500_kb_path, CHROME_EXECUTABLE_PATH
 from pages.add_photograph_page import AddPhotographPage
 from pages.login_page import LoginPage
+
 from pages.personal_details_page import PersonalDetailsPage
 
 
@@ -34,12 +35,8 @@ class AddPhotoTestCase(unittest.TestCase):
         self.login_page.get_welcome_massage()
         self.personal_details_page.goto_page()
         self.add_photograph_page.employee_picture()
-
-
-
-
-        driver.find_element_by_name('photofile').send_keys(file_path)
-        driver.find_element_by_id('btnSave').click()
+        self.add_photograph_page.choose_file(file_path)
+        self.add_photograph_page.save_button()
 
         self.wait.until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR, ".message.success")))
         self.wait.until(expected_conditions.text_to_be_present_in_element((By.CSS_SELECTOR, ".message.success"),
