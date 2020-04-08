@@ -1,6 +1,9 @@
 import unittest
 from time import sleep
 
+from pages.add_photograph_page import AddPhotographPage
+from pages.contact_details_page import ContactDetailsPage
+from pages.login_page import LoginPage
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
@@ -8,6 +11,7 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
 from fixtures.params import CHROME_EXECUTABLE_PATH, DOMAIN
+from pages.personal_details_page import PersonalDetailsPage
 
 
 class ContactDetailsTestCase(unittest.TestCase):
@@ -16,6 +20,10 @@ class ContactDetailsTestCase(unittest.TestCase):
         self.driver = webdriver.Chrome(executable_path=CHROME_EXECUTABLE_PATH)
         self.driver.get(DOMAIN)
         self.wait = WebDriverWait(self.driver, 2)
+        self.login_page = LoginPage(self.driver)
+        self.personal_details_page = PersonalDetailsPage(self.driver)
+        self.contact_details_page = ContactDetailsPage(self.driver)
+        self.add_photograph_page = AddPhotographPage(self.driver)
 
     def tearDown(self) -> None:
         self.driver.quit()
@@ -23,15 +31,10 @@ class ContactDetailsTestCase(unittest.TestCase):
     def test_08_contact_details(self):
 
         driver = self.driver
-        driver.find_element_by_id('txtUsername').send_keys('admin')
-        driver.find_element_by_id('txtPassword').send_keys('password')
-        driver.find_element_by_id("btnLogin").click()
-
+        self.login_page.login()
         sleep(1)
-
-        driver.find_element_by_id('menu_pim_viewMyDetails').click()
-        driver.find_element_by_link_text('Contact Details').click()
-
+        self.personal_details_page.goto_page()
+        self.contact_details_page.contact()
         sleep(1)
 
         page_title = driver.find_element_by_xpath('//*[@id="contact-details"]/div[2]/div[1]/h1').text
@@ -39,18 +42,10 @@ class ContactDetailsTestCase(unittest.TestCase):
 
     def test_09_is_contact_details_editable(self):
         driver = self.driver
-        driver.find_element_by_id('txtUsername').send_keys('admin')
-        driver.find_element_by_id('txtPassword').send_keys('password')
-        driver.find_element_by_id("btnLogin").click()
-
-        sleep(1)
-
-        driver.find_element_by_id('menu_pim_viewMyDetails').click()
-        driver.find_element_by_link_text('Contact Details').click()
-
-        sleep(1)
-
-        driver.find_element_by_id('btnSave').click()
+        self.login_page.login()
+        self.personal_details_page.goto_page()
+        self.contact_details_page.contact()
+        self.add_photograph_page.save_button()
 
         status = driver.find_element_by_id('contact_street1').is_enabled()
 
@@ -60,31 +55,30 @@ class ContactDetailsTestCase(unittest.TestCase):
 
     def test_10_contact_details_edit(self):
         driver = self.driver
-        adress_1 = 'adress1_1234!@#$'
-        adress_2  = 'adress2_f1234!@#$'
+        adress_1 = 'address1_1234!@#$'
+        adress_2 = 'address2_f1234!@#$'
         city = 'city_asdf1234!@#$'
         state_province = 'state_asdf1234!@#$'
         zip_code = 'zip1234!@#$'
-        driver.find_element_by_id('txtUsername').send_keys('admin')
-        driver.find_element_by_id('txtPassword').send_keys('password')
-        driver.find_element_by_id("btnLogin").click()
-
+        self.login_page.login()
+        self.personal_details_page.goto_page()
+        self.contact_details_page.contact()
         sleep(1)
+        self.add_photograph_page.save_button()
+        self.contact_details_page.clear_street_1()
+        self.contact_details_page.street_adress_1()
+        self.contact_details_page.clear_street_2()
+        self.contact_details_page.street_adress_2()
+        self.contact_details_page.clear_city()
+        self.contact_details_page.city()
 
-        driver.find_element_by_id('menu_pim_viewMyDetails').click()
-        driver.find_element_by_link_text('Contact Details').click()
-
-        sleep(1)
-
-        driver.find_element_by_id('btnSave').click()
-
-        driver.find_element_by_id('contact_street1').clear()
-        driver.find_element_by_id('contact_street1').send_keys(adress_1)
-        driver.find_element_by_id('contact_street2').clear()
-        driver.find_element_by_id('contact_street2').send_keys(adress_2)
-        driver.find_element_by_id('contact_city').clear()
-        driver.find_element_by_id('contact_city').send_keys(city)
-        driver.find_element_by_id('contact_province').clear()
+        #driver.find_element_by_id('contact_street1').clear()
+        #driver.find_element_by_id('contact_street1').send_keys(address_1)
+        #driver.find_element_by_id('contact_street2').clear()
+        #driver.find_element_by_id('contact_street2').send_keys(address_2)
+        #driver.find_element_by_id('contact_city').clear()
+        #driver.find_element_by_id('contact_city').send_keys(city)
+        #driver.find_element_by_id('contact_province').clear()
         driver.find_element_by_id('contact_province').send_keys(state_province)
         driver.find_element_by_id('contact_emp_zipcode').clear()
         driver.find_element_by_id('contact_emp_zipcode').send_keys(zip_code)

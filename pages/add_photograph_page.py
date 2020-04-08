@@ -17,6 +17,5 @@ class AddPhotographPage:
         self.driver.find_element_by_name('photofile').send_keys(file_path)
 
     def save_button(self):
-
         self.driver.find_element_by_id('btnSave').click()
 
