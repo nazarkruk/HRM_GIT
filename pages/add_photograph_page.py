@@ -14,4 +14,3 @@ class AddPhotographPage:
 
     def upload_button(self):
         self.driver.find_element_by_id('btnSave').click()
-

@@ -35,3 +35,11 @@ class ContactDetailsPage:
 
     def clear_province(self):
         self.driver.find_element_by_id('contact_province').clear()
+
+
+    def save_button(self):
+        self.driver.find_element_by_id('btnSave').click()
+
+    def setup_address_1(self, address_1):
+        self.driver.find_element_by_id('contact_street1').clear()
+        self.driver.find_element_by_id('contact_street1').send_keys(address_1)

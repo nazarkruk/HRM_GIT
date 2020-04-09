@@ -64,16 +64,18 @@ class ContactDetailsTestCase(unittest.TestCase):
         self.personal_details_page.goto_page()
         self.contact_details_page.contact()
         sleep(1)
-        self.add_photograph_page.save_button()
-        self.contact_details_page.clear_street_1()
-        self.contact_details_page.street_adress_1()
+        #
+        self.contact_details_page.save_button()
+        # setup street_1
+        self.contact_details_page.setup_address_1()
+
+        # setup street_2
         self.contact_details_page.clear_street_2()
         self.contact_details_page.street_adress_2()
         self.contact_details_page.clear_city()
         self.contact_details_page.city()
 
-        #driver.find_element_by_id('contact_street1').clear()
-        #driver.find_element_by_id('contact_street1').send_keys(address_1)
+
         #driver.find_element_by_id('contact_street2').clear()
         #driver.find_element_by_id('contact_street2').send_keys(address_2)
         #driver.find_element_by_id('contact_city').clear()
