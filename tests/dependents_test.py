@@ -8,6 +8,9 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
 from fixtures.params import CHROME_EXECUTABLE_PATH, DOMAIN
+from pages.dependents_page import DependentsPage
+from pages.login_page import LoginPage
+from pages.personal_details_page import PersonalDetailsPage
 
 
 class DependentsTestCase(unittest.TestCase):
@@ -17,6 +20,9 @@ class DependentsTestCase(unittest.TestCase):
         self.driver = webdriver.Chrome(executable_path=CHROME_EXECUTABLE_PATH)
         self.driver.get(DOMAIN)
         self.wait = WebDriverWait(self.driver, 2)
+        self.login_page = LoginPage(self.driver)
+        self.personal_details_page = PersonalDetailsPage(self.driver)
+        self.dependents_page = DependentsPage(self.driver)
 
     def tearDown(self) -> None:
         self.driver.quit()
@@ -24,24 +30,29 @@ class DependentsTestCase(unittest.TestCase):
     def test_26_add_dependent(self):
         driver = self.driver
 
-        driver.find_element_by_id('txtUsername').send_keys('admin')
-        driver.find_element_by_id('txtPassword').send_keys('password')
-        driver.find_element_by_id("btnLogin").click()
+        self.login_page.login()
 
         sleep(1)
-
-        driver.find_element_by_id('menu_pim_viewMyDetails').click()
-        driver.find_element_by_link_text('Dependents').click()
+        self.personal_details_page.goto_page()
+        self.dependents_page.dependents()
+        #driver.find_element_by_id('menu_pim_viewMyDetails').click()
+        #driver.find_element_by_link_text('Dependents').click()
 
         sleep(1)
+        self.dependents_page.add_dependents()
+        self.dependents_page.dependents_name()
 
-        driver.find_element_by_id('btnAddDependent').click()
-        driver.find_element_by_id('dependent_name').clear()
-        driver.find_element_by_id('dependent_name').send_keys('Mark Sayfou')
+
+        #driver.find_element_by_id('btnAddDependent').click()
+        #driver.find_element_by_id('dependent_name').clear()
+        #driver.find_element_by_id('dependent_name').send_keys('Mark Sayfou')
         Select(driver.find_element_by_id('dependent_relationshipType')).select_by_visible_text("Child")
-        driver.find_element_by_id('dependent_dateOfBirth').clear()
-        driver.find_element_by_id('dependent_dateOfBirth').send_keys('03-12-2020')
-        driver.find_element_by_id('btnSaveDependent').click()
+
+        self.dependents_page.dependents_date_of_birth()
+        self.dependents_page.save_dependents()
+        #driver.find_element_by_id('dependent_dateOfBirth').clear()
+        #driver.find_element_by_id('dependent_dateOfBirth').send_keys('03-12-2020')
+        #driver.find_element_by_id('btnSaveDependent').click()
 
         self.wait.until(expected_conditions.text_to_be_present_in_element((By.CSS_SELECTOR, ".message.success"),
                                                                           'Successfully Saved'))
@@ -51,28 +62,34 @@ class DependentsTestCase(unittest.TestCase):
         self.assertEqual("Mark Sayfou", dependent_name)
 
         # clean up
-        driver.find_element_by_id("checkAll").click()
-        driver.find_element_by_id('delDependentBtn').click()
+        self.dependents_page.check_all_dependents()
+        self.dependents_page.del_dependents()
+
+        #driver.find_element_by_id("checkAll").click()
+        #driver.find_element_by_id('delDependentBtn').click()
 
     def test_27_dependent_name_required(self):
         driver = self.driver
 
-        driver.find_element_by_id('txtUsername').send_keys('admin')
-        driver.find_element_by_id('txtPassword').send_keys('password')
-        driver.find_element_by_id("btnLogin").click()
+        self.login_page.login()
 
         sleep(1)
-
-        driver.find_element_by_id('menu_pim_viewMyDetails').click()
-        driver.find_element_by_link_text('Dependents').click()
+        self.personal_details_page.goto_page()
+        self.dependents_page.dependents()
+        #driver.find_element_by_id('menu_pim_viewMyDetails').click()
+        #driver.find_element_by_link_text('Dependents').click()
 
         sleep(1)
+        self.dependents_page.add_dependents()
 
-        driver.find_element_by_id('btnAddDependent').click()
+        #driver.find_element_by_id('btnAddDependent').click()
         Select(driver.find_element_by_id('dependent_relationshipType')).select_by_visible_text("Child")
-        driver.find_element_by_id('dependent_dateOfBirth').clear()
-        driver.find_element_by_id('dependent_dateOfBirth').send_keys('03-12-2020')
-        driver.find_element_by_id('btnSaveDependent').click()
+
+        self.dependents_page.dependents_date_of_birth()
+        self.dependents_page.save_dependents()
+        #driver.find_element_by_id('dependent_dateOfBirth').clear()
+        #driver.find_element_by_id('dependent_dateOfBirth').send_keys('03-12-2020')
+        #driver.find_element_by_id('btnSaveDependent').click()
 
         self.assertTrue(driver.find_element_by_xpath('//*[@id="frmEmpDependent"]/fieldset/ol/li[1]/span').text == "Required")
 
@@ -80,49 +97,59 @@ class DependentsTestCase(unittest.TestCase):
     def test_28_dependent_relationship_required(self):
         driver = self.driver
 
-        driver.find_element_by_id('txtUsername').send_keys('admin')
-        driver.find_element_by_id('txtPassword').send_keys('password')
-        driver.find_element_by_id("btnLogin").click()
+        self.login_page.login()
 
         sleep(1)
+        self.personal_details_page.goto_page()
+        self.dependents_page.dependents()
 
-        driver.find_element_by_id('menu_pim_viewMyDetails').click()
-        driver.find_element_by_link_text('Dependents').click()
+        #driver.find_element_by_id('menu_pim_viewMyDetails').click()
+        #driver.find_element_by_link_text('Dependents').click()
 
         sleep(1)
+        self.dependents_page.add_dependents()
+        self.dependents_page.dependents_name()
+        self.dependents_page.dependents_date_of_birth()
+        self.dependents_page.save_dependents()
 
-        driver.find_element_by_id('btnAddDependent').click()
-        driver.find_element_by_id('dependent_name').clear()
-        driver.find_element_by_id('dependent_name').send_keys('Mark Sayfou')
-        driver.find_element_by_id('dependent_dateOfBirth').clear()
-        driver.find_element_by_id('dependent_dateOfBirth').send_keys('03-12-2020')
-        driver.find_element_by_id('btnSaveDependent').click()
+        #driver.find_element_by_id('btnAddDependent').click()
+        #driver.find_element_by_id('dependent_name').clear()
+        #driver.find_element_by_id('dependent_name').send_keys('Mark Sayfou')
+        #driver.find_element_by_id('dependent_dateOfBirth').clear()
+        #driver.find_element_by_id('dependent_dateOfBirth').send_keys('03-12-2020')
+        #driver.find_element_by_id('btnSaveDependent').click()
 
         self.assertTrue(driver.find_element_by_xpath('//*[@id="frmEmpDependent"]/fieldset/ol/li[2]/span').text == "Required")
 
     def test_29_add_dependent_other_relationship(self):
         driver = self.driver
 
-        driver.find_element_by_id('txtUsername').send_keys('admin')
-        driver.find_element_by_id('txtPassword').send_keys('password')
-        driver.find_element_by_id("btnLogin").click()
+        self.login_page.login()
 
         sleep(1)
+        self.personal_details_page.goto_page()
+        self.dependents_page.dependents()
 
-        driver.find_element_by_id('menu_pim_viewMyDetails').click()
-        driver.find_element_by_link_text('Dependents').click()
+        #driver.find_element_by_id('menu_pim_viewMyDetails').click()
+        #driver.find_element_by_link_text('Dependents').click()
 
         sleep(1)
+        self.dependents_page.add_dependents()
+        self.dependents_page.dependents_name()
 
-        driver.find_element_by_id('btnAddDependent').click()
-        driver.find_element_by_id('dependent_name').clear()
-        driver.find_element_by_id('dependent_name').send_keys('Mark Sayfou')
+        #driver.find_element_by_id('btnAddDependent').click()
+        #driver.find_element_by_id('dependent_name').clear()
+        #driver.find_element_by_id('dependent_name').send_keys('Mark Sayfou')
         Select(driver.find_element_by_id('dependent_relationshipType')).select_by_visible_text("Other")
-        driver.find_element_by_id('dependent_relationship').clear()
-        driver.find_element_by_id('dependent_relationship').send_keys('nephew')
-        driver.find_element_by_id('dependent_dateOfBirth').clear()
-        driver.find_element_by_id('dependent_dateOfBirth').send_keys('03-12-2020')
-        driver.find_element_by_id('btnSaveDependent').click()
+
+        self.dependents_page.dependents_relatioship()
+        self.dependents_page.dependents_date_of_birth()
+        self.dependents_page.save_dependents()
+        #driver.find_element_by_id('dependent_relationship').clear()
+        #driver.find_element_by_id('dependent_relationship').send_keys('nephew')
+        #driver.find_element_by_id('dependent_dateOfBirth').clear()
+        #driver.find_element_by_id('dependent_dateOfBirth').send_keys('03-12-2020')
+        #driver.find_element_by_id('btnSaveDependent').click()
 
         self.wait.until(expected_conditions.text_to_be_present_in_element((By.CSS_SELECTOR, ".message.success"),
                                                                           'Successfully Saved'))
@@ -132,26 +159,30 @@ class DependentsTestCase(unittest.TestCase):
         self.assertEqual("Mark Sayfou", dependent_name)
 
         # clean up
-        driver.find_element_by_id("checkAll").click()
-        driver.find_element_by_id('delDependentBtn').click()
+        self.dependents_page.check_all_dependents()
+        self.dependents_page.del_dependents()
+
+        #driver.find_element_by_id("checkAll").click()
+        #driver.find_element_by_id('delDependentBtn').click()
 
     def test_30_add_dependent_other_specify(self):
         driver = self.driver
 
-        driver.find_element_by_id('txtUsername').send_keys('admin')
-        driver.find_element_by_id('txtPassword').send_keys('password')
-        driver.find_element_by_id("btnLogin").click()
+        self.login_page.login()
 
         sleep(1)
+        self.personal_details_page.goto_page()
+        self.dependents_page.dependents()
 
-        driver.find_element_by_id('menu_pim_viewMyDetails').click()
-        driver.find_element_by_link_text('Dependents').click()
+        #driver.find_element_by_id('menu_pim_viewMyDetails').click()
+        #driver.find_element_by_link_text('Dependents').click()
 
         sleep(1)
 
         driver.find_element_by_id('btnAddDependent').click()
         driver.find_element_by_id('dependent_name').clear()
         driver.find_element_by_id('dependent_name').send_keys('Mark Sayfou')
+
         Select(driver.find_element_by_id('dependent_relationshipType')).select_by_visible_text("Other")
         driver.find_element_by_id('dependent_dateOfBirth').clear()
         driver.find_element_by_id('dependent_dateOfBirth').send_keys('03-12-2020')
