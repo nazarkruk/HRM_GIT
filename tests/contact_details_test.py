@@ -45,7 +45,7 @@ class ContactDetailsTestCase(unittest.TestCase):
         self.login_page.login()
         self.personal_details_page.goto_page()
         self.contact_details_page.contact()
-        self.add_photograph_page.save_button()
+        self.contact_details_page.save_button()
 
         status = driver.find_element_by_id('contact_street1').is_enabled()
 
@@ -55,8 +55,8 @@ class ContactDetailsTestCase(unittest.TestCase):
 
     def test_10_contact_details_edit(self):
         driver = self.driver
-        adress_1 = 'address1_1234!@#$'
-        adress_2 = 'address2_f1234!@#$'
+        address_1 = 'address1_1234!@#$'
+        address_2 = 'address2_f1234!@#$'
         city = 'city_asdf1234!@#$'
         state_province = 'state_asdf1234!@#$'
         zip_code = 'zip1234!@#$'
@@ -67,26 +67,17 @@ class ContactDetailsTestCase(unittest.TestCase):
         #
         self.contact_details_page.save_button()
         # setup street_1
-        self.contact_details_page.setup_address_1()
-
+        self.contact_details_page.setup_address_1(address_1)
         # setup street_2
-        self.contact_details_page.clear_street_2()
-        self.contact_details_page.street_adress_2()
-        self.contact_details_page.clear_city()
-        self.contact_details_page.city()
+        self.contact_details_page.setup_address_2(address_2)
+        # setup city
+        self.contact_details_page.setup_city(city)
+        self.contact_details_page.setup_state_province(state_province)
+        self.contact_details_page.setup_zip_code(zip_code)
 
-
-        #driver.find_element_by_id('contact_street2').clear()
-        #driver.find_element_by_id('contact_street2').send_keys(address_2)
-        #driver.find_element_by_id('contact_city').clear()
-        #driver.find_element_by_id('contact_city').send_keys(city)
-        #driver.find_element_by_id('contact_province').clear()
-        driver.find_element_by_id('contact_province').send_keys(state_province)
-        driver.find_element_by_id('contact_emp_zipcode').clear()
-        driver.find_element_by_id('contact_emp_zipcode').send_keys(zip_code)
         Select(driver.find_element_by_id('contact_country')).select_by_index(5)
 
-        driver.find_element_by_id('btnSave').click()
+        self.contact_details_page.save_button()
         self.wait.until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR, ".message.success")))
         self.wait.until(expected_conditions.text_to_be_present_in_element((By.CSS_SELECTOR, ".message.success"),'Successfully Saved'))
 
@@ -97,44 +88,39 @@ class ContactDetailsTestCase(unittest.TestCase):
 
     def test_11_contact_zip_10(self):
         driver = self.driver
-        zip_code = '1234567890'
-        driver.find_element_by_id('txtUsername').send_keys('admin')
-        driver.find_element_by_id('txtPassword').send_keys('password')
-        driver.find_element_by_id("btnLogin").click()
+        zipcode = '1234567890'
+        self.login_page.login()
 
         sleep(1)
-
-        driver.find_element_by_id('menu_pim_viewMyDetails').click()
-        driver.find_element_by_link_text('Contact Details').click()
+        self.personal_details_page.goto_page()
+        self.contact_details_page.contact()
 
         sleep(1)
+        self.contact_details_page.save_button()
+        self.contact_details_page.setup_zipcode(zipcode)
 
-        driver.find_element_by_id('btnSave').click()
+        #driver.find_element_by_id('contact_emp_zipcode').clear()
+        #driver.find_element_by_id('contact_emp_zipcode').send_keys(zip_code)
 
-        driver.find_element_by_id('contact_emp_zipcode').clear()
-        driver.find_element_by_id('contact_emp_zipcode').send_keys(zip_code)
-
-        driver.find_element_by_id('btnSave').click()
+        self.contact_details_page.save_button()
         #self.wait.until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR, ".message.success")))
         self.wait.until(expected_conditions.text_to_be_present_in_element((By.CSS_SELECTOR, ".message.success"),'Successfully Saved'))
 
         input_zip = driver.find_element_by_id('contact_emp_zipcode')
         value_zip_code = input_zip.get_attribute('value')
 
-        self.assertEqual(zip_code, value_zip_code)
+        self.assertEqual(zipcode, value_zip_code)
 
 
     def test_11_contact_zip_more_10(self):
         driver = self.driver
         zip_code = '123456789123456789'
-        driver.find_element_by_id('txtUsername').send_keys('admin')
-        driver.find_element_by_id('txtPassword').send_keys('password')
-        driver.find_element_by_id("btnLogin").click()
+        self.login_page.login()
 
         sleep(1)
 
-        driver.find_element_by_id('menu_pim_viewMyDetails').click()
-        driver.find_element_by_link_text('Contact Details').click()
+        self.personal_details_page.goto_page()
+        self.contact_details_page.contact()
 
         sleep(1)
 

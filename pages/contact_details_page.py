@@ -12,26 +12,9 @@ class ContactDetailsPage:
     def contact(self):
         self.driver.find_element_by_link_text('Contact Details').click()
 
-    def clear_street_1(self):
-        self.driver.find_element_by_id('contact_street1').clear()
-
-    def street_adress_1(self, adress_1):
-        driver = self.driver
-        driver.find_element_by_id('contact_street1').send_keys(adress_1)
-
-    def clear_street_2(self):
-        self.driver.find_element_by_id('contact_street2').clear()
-
-    def street_adress_2(self, adress_2):
-        driver = self.driver
-        driver.find_element_by_id('contact_street2').send_keys(adress_2)
-
-    def clear_city(self):
+    def setup_city(self, city):
         self.driver.find_element_by_id('contact_city').clear()
-
-    def city(self, city):
-        driver = self.driver
-        driver.find_element_by_id('contact_city').send_keys(city)
+        self.driver.find_element_by_id('contact_city').send_keys(city)
 
     def clear_province(self):
         self.driver.find_element_by_id('contact_province').clear()
@@ -43,3 +26,19 @@ class ContactDetailsPage:
     def setup_address_1(self, address_1):
         self.driver.find_element_by_id('contact_street1').clear()
         self.driver.find_element_by_id('contact_street1').send_keys(address_1)
+
+    def setup_address_2(self, address_2):
+        self.driver.find_element_by_id('contact_street2').clear()
+        self.driver.find_element_by_id('contact_street2').send_keys(address_2)
+
+    def setup_state_province(self, state_province):
+        self.driver.find_element_by_id('contact_province').clear()
+        self.driver.find_element_by_id('contact_province').send_keys(state_province)
+
+    def setup_zip_code(self, zip_code):
+        self.driver.find_element_by_id('contact_emp_zipcode').clear()
+        self.driver.find_element_by_id('contact_emp_zipcode').send_keys(zip_code)
+
+    def setup_zipcode(self, zipcode):
+        self.driver.find_element_by_id('contact_emp_zipcode').clear()
+        self.driver.find_element_by_id('contact_emp_zipcode').send_keys(zipcode)
