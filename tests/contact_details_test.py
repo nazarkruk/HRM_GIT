@@ -248,7 +248,7 @@ class ContactDetailsTestCase(unittest.TestCase):
         self.contact_details_page.edit_button()
 
         self.contact_details_page.set_work_email(work_email)
-        self.contact_details_page.set_work_email(work_email)
+        self.contact_details_page.set_other_email(work_email)
 
         self.contact_details_page.save_button()
 
