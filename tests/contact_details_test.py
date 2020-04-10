@@ -98,10 +98,6 @@ class ContactDetailsTestCase(unittest.TestCase):
         sleep(1)
         self.contact_details_page.save_button()
         self.contact_details_page.setup_zipcode(zipcode)
-
-        #driver.find_element_by_id('contact_emp_zipcode').clear()
-        #driver.find_element_by_id('contact_emp_zipcode').send_keys(zip_code)
-
         self.contact_details_page.save_button()
         #self.wait.until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR, ".message.success")))
         self.wait.until(expected_conditions.text_to_be_present_in_element((By.CSS_SELECTOR, ".message.success"),'Successfully Saved'))
@@ -241,7 +237,6 @@ class ContactDetailsTestCase(unittest.TestCase):
     def test_15_contact_same_email(self):
         driver = self.driver
         work_email = 'work@test.test'
-
         self.login_page.login()
 
         sleep(1)
