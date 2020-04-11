@@ -15,6 +15,8 @@ class ContactDetailsTestCase(unittest.TestCase):
         self.driver = webdriver.Chrome(executable_path=CHROME_EXECUTABLE_PATH)
         self.driver.get(DOMAIN)
         self.wait = WebDriverWait(self.driver, 2)
+        self.personal_details_page = PersonalDetailsPage(self.driver)
+        self.add_photograph_page = AddPhotographPage(self.driver)
 
     def tearDown(self) -> None:
         self.driver.quit()
